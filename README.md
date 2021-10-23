@@ -1,2 +1,2 @@
 # General command to install necessary library + typescript stuff
-`npm install --save-dev hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers ts-node typescript chai @types/node @types/mocha @types/chai  @openzeppelin/contracts  @typechain/ethers-v5 hardhat-spdx-license-identifier @typechain/hardhat typechain`
+`npm install --save-dev hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers ts-node typescript chai @types/node @types/mocha @types/chai  @openzeppelin/contracts  @typechain/ethers-v5 hardhat-spdx-license-identifier @typechain/hardhat typechain @nomiclabs/hardhat-etherscan`
