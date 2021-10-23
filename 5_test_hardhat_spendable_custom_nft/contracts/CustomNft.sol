@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CustomNft is ERC721, Ownable {
+contract CustomNft is ERC721, Ownable, Pausable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
@@ -45,7 +45,11 @@ contract CustomNft is ERC721, Ownable {
         emit ConsumedNft(msg.sender, _tokenId);
     }
 
-    function GetTokenInfo(uint256 _tokenId) public view returns(uint256 tokenId_, bool isSpent_){
+    function GetTokenInfo(uint256 _tokenId)
+        public
+        view
+        returns (uint256 tokenId_, bool isSpent_)
+    {
         return (_tokenId, isSpendRecords[_tokenId]);
     }
 

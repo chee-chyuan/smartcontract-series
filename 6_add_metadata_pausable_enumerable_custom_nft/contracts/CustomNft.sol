@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 
+
+
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -7,9 +9,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import {Base64} from "./libraries/Base64.sol";
 
-contract CustomNft is ERC721URIStorage, ERC721Enumerable, Ownable {
+contract CustomNft is ERC721URIStorage, ERC721Enumerable, Ownable, Pausable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
@@ -35,7 +38,17 @@ contract CustomNft is ERC721URIStorage, ERC721Enumerable, Ownable {
         _;
     }
 
-    function Mint(address _to) public {
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    ///allow minting when contract is not paused by owner
+    ///in the next iteration, this function is only allowed to be called by its another contract after checking if the price is paid
+    function Mint(address _to) public whenNotPaused {
         require(maxSupply - _tokenIdCounter.current() > 0, "No more supply");
 
         _safeMint(_to, _tokenIdCounter.current());
@@ -86,7 +99,11 @@ contract CustomNft is ERC721URIStorage, ERC721Enumerable, Ownable {
                 )
             )
         );
-        return json;
+
+        string memory finalTokenUri = string(
+            abi.encodePacked("data:application/json;base64,", json)
+        );
+        return finalTokenUri;
     }
 
     function supportsInterface(bytes4 interfaceId)
