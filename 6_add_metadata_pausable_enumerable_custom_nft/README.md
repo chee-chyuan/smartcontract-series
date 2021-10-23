@@ -1,15 +1,5 @@
-# Basic Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+# Adding more properties to project 5
+- retain isSpent functionality
+- added hardcoded tokenuri, for now all tokenId will return the same svg. to be changed in the future
+- changed to use `maxSupply` instead of totalSupply because OpenZeppelin uses totalSupply in Erc721Enumerable
+- remove `remainingSupply` and change requirement to `require(maxSupply - _tokenIdCounter.current() > 0, "No more supply")`. I think it saved abit of gas as we have one less state to change 
