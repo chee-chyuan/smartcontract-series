@@ -20,10 +20,15 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ContractFactoryStorageInterface extends ethers.utils.Interface {
   functions: {
+    "_tokenIdCounter()": FunctionFragment;
     "totalPaused()": FunctionFragment;
     "totalUnpaused()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_tokenIdCounter",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalPaused",
     values?: undefined
@@ -33,6 +38,10 @@ interface ContractFactoryStorageInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "_tokenIdCounter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalPaused",
     data: BytesLike
@@ -89,16 +98,24 @@ export class ContractFactoryStorage extends BaseContract {
   interface: ContractFactoryStorageInterface;
 
   functions: {
+    _tokenIdCounter(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { _value: BigNumber }>;
+
     totalPaused(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalUnpaused(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
+
+  _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalUnpaused(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalUnpaused(overrides?: CallOverrides): Promise<BigNumber>;
@@ -107,12 +124,16 @@ export class ContractFactoryStorage extends BaseContract {
   filters: {};
 
   estimateGas: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
     totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalUnpaused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     totalPaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalUnpaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;

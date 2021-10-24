@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: Unlicensed
 
+
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 pragma solidity ^0.8.4;
 
 contract ContractFactoryStorage {
+    using Counters for Counters.Counter;
+    Counters.Counter public _tokenIdCounter;
+
     //mapping countid to cloneaddress
     mapping(uint256 => address) private _cloneAddresses;
     //map to bool true if clone exist
-    mapping(address => bool) private _cloneExist;
+    mapping(address => bool) private _cloneExists;
 
     uint256 public totalPaused;
     uint256 public totalUnpaused;
@@ -25,5 +31,18 @@ contract ContractFactoryStorage {
 
     function _beforeUnpaused(address _cloneAddress) internal {
         //TODO
+    }
+
+    function _afterCreateClone(address _cloneAddress) internal {
+        //TODO create struct
+        totalUnpaused++;
+
+        //add mappings
+        _cloneAddresses[_tokenIdCounter.current()] = _cloneAddress;
+        _cloneExists[_cloneAddress] = true;
+
+        //TODO set unpaused list and index
+
+        _tokenIdCounter.increment();
     }
 }

@@ -21,6 +21,7 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   functions: {
+    "_tokenIdCounter()": FunctionFragment;
     "consumeNft(uint256,address)": FunctionFragment;
     "createClone(string,string,uint256)": FunctionFragment;
     "implementation()": FunctionFragment;
@@ -36,6 +37,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     "unpause(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_tokenIdCounter",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "consumeNft",
     values: [BigNumberish, string]
@@ -77,6 +82,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values: [string]): string;
 
+  decodeFunctionResult(
+    functionFragment: "_tokenIdCounter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "consumeNft", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "createClone",
@@ -176,6 +185,10 @@ export class Erc721ContractFactory extends BaseContract {
   interface: Erc721ContractFactoryInterface;
 
   functions: {
+    _tokenIdCounter(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { _value: BigNumber }>;
+
     consumeNft(
       _tokenId: BigNumberish,
       _cloneAddress: string,
@@ -232,6 +245,8 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
   consumeNft(
     _tokenId: BigNumberish,
@@ -290,6 +305,8 @@ export class Erc721ContractFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
     consumeNft(
       _tokenId: BigNumberish,
       _cloneAddress: string,
@@ -363,6 +380,8 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   estimateGas: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
     consumeNft(
       _tokenId: BigNumberish,
       _cloneAddress: string,
@@ -421,6 +440,8 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   populateTransaction: {
+    _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     consumeNft(
       _tokenId: BigNumberish,
       _cloneAddress: string,

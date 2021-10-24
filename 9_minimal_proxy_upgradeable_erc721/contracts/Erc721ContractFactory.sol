@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Unlicensed
 
+
+
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -36,7 +38,7 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
         );
 
         require(success, "clone is unsuccessful");
-
+        _afterCreateClone(cloneAddress);
         emit CreatedNewCloneContract(cloneAddress);
     }
 
