@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Unlicensed
+
 pragma solidity ^0.8.4;
 
 /// functions that the contract factory needs to use

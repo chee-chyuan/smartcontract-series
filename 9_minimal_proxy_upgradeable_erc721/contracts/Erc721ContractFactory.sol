@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Unlicensed
+
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -43,6 +45,13 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
         //if ok we mint
     }
 
+    /// for owner to consume the nft to exchange for goods. consumed nfts are consider spent
+    /// @param _tokenId tokenid of the nft
+    /// @param _cloneAddress clone address of the nft
+    function consumeNft(uint256 _tokenId, address _cloneAddress) public onlyOwner {
+
+    }
+
     function pause(address _cloneAddress) public onlyOwner {
         _beforePaused(_cloneAddress);
 
@@ -67,5 +76,11 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
 
     function setImplementation(address _implementation) public onlyOwner {
         implementation = _implementation;
+    }
+
+    ///transfer eth from this account to address
+    /// @param _value value to be transferred in wei
+    /// @param _recipient recipient address
+    function transferEth(uint256 _value, address _recipient) public onlyOwner {
     }
 }
