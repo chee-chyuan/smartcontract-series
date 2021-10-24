@@ -65,11 +65,9 @@ contract PriceOracleWrapper is IPriceOracleWrapper, Ownable {
         int256 dpMultiplier = usdDecimalPlaces - oracleDecimalPlaces + 18;
         require(dpMultiplier > 0);
 
-        //usdPrice/(oracle data)
         int256 latestAnswer = externalOracle.latestAnswer();
-        uint256 priceInWei = (_usdPrice / uint256(latestAnswer)) *
-            10**uint256(dpMultiplier);
 
+        uint256 priceInWei = _usdPrice * 10**uint(dpMultiplier) / uint256(latestAnswer);
         return priceInWei;
     }
 }
