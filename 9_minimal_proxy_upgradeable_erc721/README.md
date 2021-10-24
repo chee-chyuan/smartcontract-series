@@ -44,10 +44,14 @@ struct CloneInfo {
 - check clone owner, name and symbol
 - check mappings, structs and count in storage
 
-2. admin-mint-consume-test.ts
+2. admin-consume-test.ts
 - check admin functionalities
-- mint, consume
+- mint, and test consume only admin
 
 3. admin-pause-unpause-test.ts
 -check pause, unpause
 -check all mappings in pause, unpause
+
+4. purchase-transfereth-test.ts
+-test priceoracle purchase and unsuccessuful purchase
+-test transfer eth to recipient

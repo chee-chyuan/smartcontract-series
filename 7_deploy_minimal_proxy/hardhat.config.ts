@@ -5,7 +5,7 @@ import "hardhat-spdx-license-identifier";
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
 import "@nomiclabs/hardhat-etherscan";
-import {readFileSync} from "fs";
+import { readFileSync } from "fs";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -28,7 +28,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
- const config: HardhatUserConfig = {
+const config: HardhatUserConfig = {
   solidity: "0.8.4",
   networks: {
     rinkeby: {
@@ -39,7 +39,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   spdxLicenseIdentifier: {
     overwrite: true,
     runOnCompile: true,
-  }, 
+  },
   typechain: {
     outDir: 'src/types',
     target: 'ethers-v5',
