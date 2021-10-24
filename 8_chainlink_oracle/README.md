@@ -1,4 +1,6 @@
 # implementing price oracle
+- added @defi-wonderland/smock for mock contract testing
+
 chainlink eth/usd rinkeby contract
 https://rinkeby.etherscan.io/address/0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
 
