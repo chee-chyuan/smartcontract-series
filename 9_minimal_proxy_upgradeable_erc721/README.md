@@ -48,6 +48,7 @@ struct CloneInfo {
 2. admin-consume-test.ts
 - check admin functionalities
 - mint, and test consume only admin
+-test transfer eth to recipient
 
 3. admin-pause-unpause-test.ts
 -check pause, unpause
@@ -55,4 +56,3 @@ struct CloneInfo {
 
 4. purchase-transfereth-test.ts
 -test priceoracle purchase and unsuccessuful purchase
--test transfer eth to recipient

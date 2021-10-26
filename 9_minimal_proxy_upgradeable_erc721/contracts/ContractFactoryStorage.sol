@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: Unlicensed
 
+
+
+
+
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 pragma solidity ^0.8.4;
@@ -14,9 +18,6 @@ contract ContractFactoryStorage {
     //map to bool true if clone exist
     mapping(address => bool) public _cloneExists;
 
-    uint256 public totalPaused;
-    uint256 public totalUnpaused;
-
     //mapping on countId to index of clone in paused/unpaused list
     mapping(uint256 => uint256) private _pausedCloneIndex;
     mapping(uint256 => uint256) private _unpausedCloneIndex;
@@ -27,18 +28,17 @@ contract ContractFactoryStorage {
     function _beforePaused(address _cloneAddress) internal {
         uint256 countId = _cloneAddressIds[_cloneAddress];
         _addPaused(countId);
-        _removePaused(countId);
+        _removeUnpaused(countId);
     }
 
     function _beforeUnpaused(address _cloneAddress) internal {
         uint256 countId = _cloneAddressIds[_cloneAddress];
         _addUnpaused(countId);
-        _removeUnpaused(countId);
+        _removePaused(countId);
     }
 
     function _afterCreateClone(address _cloneAddress) internal {
         //TODO create struct containing the token info, eg. name, price
-        totalUnpaused++;
 
         //add mappings
         _cloneAddresses[_tokenIdCounter.current()] = _cloneAddress;
@@ -84,5 +84,13 @@ contract ContractFactoryStorage {
 
         delete _unpausedCloneIndex[_countId];
         _unpausedList.pop();
+    }
+
+    function totalUnpaused() public view returns(uint) {
+        return _unpausedList.length;
+    }
+
+    function totalPaused() public view returns(uint) {
+        return _pausedList.length;
     }
 }

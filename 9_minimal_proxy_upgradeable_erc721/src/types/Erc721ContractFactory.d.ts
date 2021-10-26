@@ -30,7 +30,7 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     "consumeNft(uint256,address)": FunctionFragment;
     "createClone(string,string,uint256)": FunctionFragment;
     "implementation()": FunctionFragment;
-    "mint(address)": FunctionFragment;
+    "mint(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "pause(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -78,7 +78,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     functionFragment: "implementation",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "mint", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "mint",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values: [string]): string;
   encodeFunctionData(
@@ -273,6 +276,7 @@ export class Erc721ContractFactory extends BaseContract {
 
     mint(
       _to: string,
+      _cloneAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -351,6 +355,7 @@ export class Erc721ContractFactory extends BaseContract {
 
   mint(
     _to: string,
+    _cloneAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -430,7 +435,11 @@ export class Erc721ContractFactory extends BaseContract {
 
     implementation(overrides?: CallOverrides): Promise<string>;
 
-    mint(_to: string, overrides?: CallOverrides): Promise<void>;
+    mint(
+      _to: string,
+      _cloneAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -529,6 +538,7 @@ export class Erc721ContractFactory extends BaseContract {
 
     mint(
       _to: string,
+      _cloneAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -614,6 +624,7 @@ export class Erc721ContractFactory extends BaseContract {
 
     mint(
       _to: string,
+      _cloneAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

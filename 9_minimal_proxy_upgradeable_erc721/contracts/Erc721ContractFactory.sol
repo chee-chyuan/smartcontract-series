@@ -2,6 +2,8 @@
 
 
 
+
+
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -43,6 +45,7 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     }
 
     function mint(address _to, address _cloneAddress) public {
+        //TODO
         //check price
         //if ok we mint
     }
@@ -88,5 +91,6 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     /// @param _value value to be transferred in wei
     /// @param _recipient recipient address
     function transferEth(uint256 _value, address _recipient) public onlyOwner {
+        //TODO
     }
 }
