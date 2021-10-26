@@ -10,6 +10,7 @@ contract ContractFactoryStorage {
 
     //mapping countid to cloneaddress
     mapping(uint256 => address) public _cloneAddresses;
+    mapping(address => uint256) public _cloneAddressIds;
     //map to bool true if clone exist
     mapping(address => bool) public _cloneExists;
 
@@ -24,11 +25,15 @@ contract ContractFactoryStorage {
     uint256[] public _unpausedList;
 
     function _beforePaused(address _cloneAddress) internal {
-        //TODO
+        uint256 countId = _cloneAddressIds[_cloneAddress];
+        _addPaused(countId);
+        _removePaused(countId);
     }
 
     function _beforeUnpaused(address _cloneAddress) internal {
-        //TODO
+        uint256 countId = _cloneAddressIds[_cloneAddress];
+        _addUnpaused(countId);
+        _removeUnpaused(countId);
     }
 
     function _afterCreateClone(address _cloneAddress) internal {
@@ -37,9 +42,10 @@ contract ContractFactoryStorage {
 
         //add mappings
         _cloneAddresses[_tokenIdCounter.current()] = _cloneAddress;
+        _cloneAddressIds[_cloneAddress] = _tokenIdCounter.current();
         _cloneExists[_cloneAddress] = true;
 
-        //TODO set unpaused list and index
+        _addUnpaused(_tokenIdCounter.current());
 
         _tokenIdCounter.increment();
     }
