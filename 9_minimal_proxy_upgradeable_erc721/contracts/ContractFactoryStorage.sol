@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: Unlicensed
 
-
-
-
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 pragma solidity ^0.8.4;
@@ -23,9 +20,8 @@ contract ContractFactoryStorage {
     mapping(uint256 => uint256) private _pausedCloneIndex;
     mapping(uint256 => uint256) private _unpausedCloneIndex;
 
-    //mapping of index to clone address in list
-    mapping(uint256 => address) private _pausedList;
-    mapping(uint256 => address) private _unpausedList;
+    uint256[] public _pausedList; //index to countId
+    uint256[] public _unpausedList;
 
     function _beforePaused(address _cloneAddress) internal {
         //TODO
@@ -46,5 +42,41 @@ contract ContractFactoryStorage {
         //TODO set unpaused list and index
 
         _tokenIdCounter.increment();
+    }
+
+    function _addUnpaused(uint256 _countId) internal {
+        _unpausedCloneIndex[_countId] = _unpausedList.length;
+        _unpausedList.push(_countId);
+    }
+
+    function _addPaused(uint256 _countId) internal {
+        _pausedCloneIndex[_countId] = _pausedList.length;
+        _pausedList.push(_countId);
+    }
+
+    function _removeUnpaused(uint256 _countId) internal {
+        uint256 lastIndex = _unpausedList.length -1;
+        uint256 toReplaceToIndex = _unpausedCloneIndex[_countId];
+
+        uint256 lastIndexValue = _unpausedList[lastIndex];
+
+        _unpausedList[toReplaceToIndex] = lastIndexValue;
+        _unpausedList[lastIndex] = _countId;
+
+        delete _unpausedCloneIndex[_countId];
+        _unpausedList.pop();
+    }
+
+    function _removePaused(uint256 _countId) internal {
+        uint256 lastIndex = _pausedList.length -1;
+        uint256 toReplaceToIndex = _pausedCloneIndex[_countId];
+
+        uint256 lastIndexValue = _pausedList[lastIndex];
+
+        _pausedList[toReplaceToIndex] = lastIndexValue;
+        _pausedList[lastIndex] = _countId;
+
+        delete _unpausedCloneIndex[_countId];
+        _unpausedList.pop();
     }
 }
