@@ -11,6 +11,7 @@
 
 structure:
 mapping(countid -> cloneaddress)
+mapping(cloneaddress -> countId) //for reverse mapping info
 mapping(cloneaddress -> true/false) for us to know if clone exist
 
 totalPaused

@@ -42,7 +42,7 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
         emit CreatedNewCloneContract(cloneAddress);
     }
 
-    function mint(address _to) public {
+    function mint(address _to, address _cloneAddress) public {
         //check price
         //if ok we mint
     }
@@ -51,7 +51,11 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     /// @param _tokenId tokenid of the nft
     /// @param _cloneAddress clone address of the nft
     function consumeNft(uint256 _tokenId, address _cloneAddress) public onlyOwner {
+        (bool success, ) = _cloneAddress.call(
+            abi.encodeWithSignature("consumeNft(uint256)", _tokenId)
+        );
 
+        require(success, "consumeNft is unsuccessful");
     }
 
     function pause(address _cloneAddress) public onlyOwner {

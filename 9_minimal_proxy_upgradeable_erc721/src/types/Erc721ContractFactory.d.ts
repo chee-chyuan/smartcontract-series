@@ -21,9 +21,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   functions: {
+    "_cloneAddressIds(address)": FunctionFragment;
     "_cloneAddresses(uint256)": FunctionFragment;
     "_cloneExists(address)": FunctionFragment;
+    "_pausedList(uint256)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
+    "_unpausedList(uint256)": FunctionFragment;
     "consumeNft(uint256,address)": FunctionFragment;
     "createClone(string,string,uint256)": FunctionFragment;
     "implementation()": FunctionFragment;
@@ -40,6 +43,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   };
 
   encodeFunctionData(
+    functionFragment: "_cloneAddressIds",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "_cloneAddresses",
     values: [BigNumberish]
   ): string;
@@ -48,8 +55,16 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "_pausedList",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "_tokenIdCounter",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "_unpausedList",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "consumeNft",
@@ -93,6 +108,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "unpause", values: [string]): string;
 
   decodeFunctionResult(
+    functionFragment: "_cloneAddressIds",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "_cloneAddresses",
     data: BytesLike
   ): Result;
@@ -101,7 +120,15 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "_pausedList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "_tokenIdCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "_unpausedList",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "consumeNft", data: BytesLike): Result;
@@ -203,6 +230,11 @@ export class Erc721ContractFactory extends BaseContract {
   interface: Erc721ContractFactoryInterface;
 
   functions: {
+    _cloneAddressIds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     _cloneAddresses(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -210,9 +242,19 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
+    _pausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
+
+    _unpausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     consumeNft(
       _tokenId: BigNumberish,
@@ -271,6 +313,8 @@ export class Erc721ContractFactory extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  _cloneAddressIds(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
   _cloneAddresses(
     arg0: BigNumberish,
     overrides?: CallOverrides
@@ -278,7 +322,17 @@ export class Erc721ContractFactory extends BaseContract {
 
   _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
+  _pausedList(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+  _unpausedList(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   consumeNft(
     _tokenId: BigNumberish,
@@ -337,6 +391,11 @@ export class Erc721ContractFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    _cloneAddressIds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _cloneAddresses(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -344,7 +403,17 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
+    _pausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    _unpausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     consumeNft(
       _tokenId: BigNumberish,
@@ -419,6 +488,11 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   estimateGas: {
+    _cloneAddressIds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _cloneAddresses(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -426,7 +500,17 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    _pausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    _unpausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     consumeNft(
       _tokenId: BigNumberish,
@@ -486,6 +570,11 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   populateTransaction: {
+    _cloneAddressIds(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _cloneAddresses(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -496,7 +585,17 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    _pausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    _unpausedList(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     consumeNft(
       _tokenId: BigNumberish,
