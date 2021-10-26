@@ -43,4 +43,3 @@ describe("test all admin functionality", () => {
 
     })
 })
-})
