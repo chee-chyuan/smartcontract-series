@@ -42,7 +42,7 @@ struct CloneInfo {
 - check factory owner
 - deploy clone
 - check clone owner, name and symbol
-- check mappings, structs and count in storage
+- check mappings, structs and count in storage (not complete)
 
 2. admin-consume-test.ts
 - check admin functionalities

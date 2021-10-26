@@ -21,6 +21,8 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   functions: {
+    "_cloneAddresses(uint256)": FunctionFragment;
+    "_cloneExists(address)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
     "consumeNft(uint256,address)": FunctionFragment;
     "createClone(string,string,uint256)": FunctionFragment;
@@ -37,6 +39,14 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     "unpause(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_cloneAddresses",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "_cloneExists",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "_tokenIdCounter",
     values?: undefined
@@ -82,6 +92,14 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values: [string]): string;
 
+  decodeFunctionResult(
+    functionFragment: "_cloneAddresses",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "_cloneExists",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_tokenIdCounter",
     data: BytesLike
@@ -185,6 +203,13 @@ export class Erc721ContractFactory extends BaseContract {
   interface: Erc721ContractFactoryInterface;
 
   functions: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
@@ -246,6 +271,13 @@ export class Erc721ContractFactory extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  _cloneAddresses(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
   consumeNft(
@@ -305,6 +337,13 @@ export class Erc721ContractFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     consumeNft(
@@ -380,6 +419,13 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   estimateGas: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     consumeNft(
@@ -440,6 +486,16 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   populateTransaction: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _cloneExists(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     consumeNft(

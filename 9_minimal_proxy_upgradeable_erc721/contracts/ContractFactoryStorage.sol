@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Unlicensed
 
 
+
+
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 pragma solidity ^0.8.4;
@@ -10,9 +12,9 @@ contract ContractFactoryStorage {
     Counters.Counter public _tokenIdCounter;
 
     //mapping countid to cloneaddress
-    mapping(uint256 => address) private _cloneAddresses;
+    mapping(uint256 => address) public _cloneAddresses;
     //map to bool true if clone exist
-    mapping(address => bool) private _cloneExists;
+    mapping(address => bool) public _cloneExists;
 
     uint256 public totalPaused;
     uint256 public totalUnpaused;
@@ -34,7 +36,7 @@ contract ContractFactoryStorage {
     }
 
     function _afterCreateClone(address _cloneAddress) internal {
-        //TODO create struct
+        //TODO create struct containing the token info, eg. name, price
         totalUnpaused++;
 
         //add mappings

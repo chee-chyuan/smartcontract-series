@@ -20,11 +20,21 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface ContractFactoryStorageInterface extends ethers.utils.Interface {
   functions: {
+    "_cloneAddresses(uint256)": FunctionFragment;
+    "_cloneExists(address)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
     "totalPaused()": FunctionFragment;
     "totalUnpaused()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_cloneAddresses",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "_cloneExists",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "_tokenIdCounter",
     values?: undefined
@@ -38,6 +48,14 @@ interface ContractFactoryStorageInterface extends ethers.utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "_cloneAddresses",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "_cloneExists",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_tokenIdCounter",
     data: BytesLike
@@ -98,6 +116,13 @@ export class ContractFactoryStorage extends BaseContract {
   interface: ContractFactoryStorageInterface;
 
   functions: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
@@ -107,6 +132,13 @@ export class ContractFactoryStorage extends BaseContract {
     totalUnpaused(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
+  _cloneAddresses(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
@@ -114,6 +146,13 @@ export class ContractFactoryStorage extends BaseContract {
   totalUnpaused(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
@@ -124,6 +163,13 @@ export class ContractFactoryStorage extends BaseContract {
   filters: {};
 
   estimateGas: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    _cloneExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalPaused(overrides?: CallOverrides): Promise<BigNumber>;
@@ -132,6 +178,16 @@ export class ContractFactoryStorage extends BaseContract {
   };
 
   populateTransaction: {
+    _cloneAddresses(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _cloneExists(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalPaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
