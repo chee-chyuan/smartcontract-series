@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Unlicensed
 
+
+
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -11,16 +13,18 @@ import "./ContractFactoryStorage.sol";
 contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     address public implementation;
 
-    event CreatedNewCloneContract(address indexed contractAddress);
+    event CreatedNewCloneContract(address indexed contractAddress, uint256 price);
 
     constructor(address _implementation) {
         implementation = _implementation;
     }
 
+    /// @param _price usd price in 8dp
     function createClone(
         string memory _name,
         string memory _symbol,
-        uint256 _maxSupply
+        uint256 _maxSupply,
+        uint256 _price
     ) public onlyOwner {
         //clone
         address cloneAddress = Clones.clone(implementation);
@@ -37,7 +41,8 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
 
         require(success, "clone is unsuccessful");
         _afterCreateClone(cloneAddress);
-        emit CreatedNewCloneContract(cloneAddress);
+        _prices[cloneAddress] = _price;
+        emit CreatedNewCloneContract(cloneAddress, _price);
     }
 
     function mint(address _to, address _cloneAddress) payable public {

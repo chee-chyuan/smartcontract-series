@@ -12,6 +12,7 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -26,11 +27,13 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     "_cloneExists(address)": FunctionFragment;
     "_pausedCloneIndex(uint256)": FunctionFragment;
     "_pausedList(uint256)": FunctionFragment;
+    "_prices(address)": FunctionFragment;
+    "_proxyDetails(address)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
     "_unpausedCloneIndex(uint256)": FunctionFragment;
     "_unpausedList(uint256)": FunctionFragment;
     "consumeNft(uint256,address)": FunctionFragment;
-    "createClone(string,string,uint256)": FunctionFragment;
+    "createClone(string,string,uint256,uint256)": FunctionFragment;
     "implementation()": FunctionFragment;
     "mint(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -64,6 +67,11 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     functionFragment: "_pausedList",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "_prices", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "_proxyDetails",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "_tokenIdCounter",
     values?: undefined
@@ -82,7 +90,7 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createClone",
-    values: [string, string, BigNumberish]
+    values: [string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "implementation",
@@ -140,6 +148,11 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     functionFragment: "_pausedList",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "_prices", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "_proxyDetails",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "_tokenIdCounter",
     data: BytesLike
@@ -191,7 +204,7 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
 
   events: {
-    "CreatedNewCloneContract(address)": EventFragment;
+    "CreatedNewCloneContract(address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
@@ -200,7 +213,7 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
 }
 
 export type CreatedNewCloneContractEvent = TypedEvent<
-  [string] & { contractAddress: string }
+  [string, BigNumber] & { contractAddress: string; price: BigNumber }
 >;
 
 export type OwnershipTransferredEvent = TypedEvent<
@@ -273,6 +286,20 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    _prices(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    _proxyDetails(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string] & {
+        Name: string;
+        Symbol: string;
+        Description: string;
+        Uri: string;
+      }
+    >;
+
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
@@ -297,6 +324,7 @@ export class Erc721ContractFactory extends BaseContract {
       _name: string,
       _symbol: string,
       _maxSupply: BigNumberish,
+      _price: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -305,7 +333,7 @@ export class Erc721ContractFactory extends BaseContract {
     mint(
       _to: string,
       _cloneAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
@@ -364,6 +392,20 @@ export class Erc721ContractFactory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  _proxyDetails(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, string, string] & {
+      Name: string;
+      Symbol: string;
+      Description: string;
+      Uri: string;
+    }
+  >;
+
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
   _unpausedCloneIndex(
@@ -386,6 +428,7 @@ export class Erc721ContractFactory extends BaseContract {
     _name: string,
     _symbol: string,
     _maxSupply: BigNumberish,
+    _price: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -394,7 +437,7 @@ export class Erc721ContractFactory extends BaseContract {
   mint(
     _to: string,
     _cloneAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   owner(overrides?: CallOverrides): Promise<string>;
@@ -456,6 +499,20 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    _proxyDetails(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string] & {
+        Name: string;
+        Symbol: string;
+        Description: string;
+        Uri: string;
+      }
+    >;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     _unpausedCloneIndex(
@@ -478,6 +535,7 @@ export class Erc721ContractFactory extends BaseContract {
       _name: string,
       _symbol: string,
       _maxSupply: BigNumberish,
+      _price: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -519,13 +577,21 @@ export class Erc721ContractFactory extends BaseContract {
   };
 
   filters: {
-    "CreatedNewCloneContract(address)"(
-      contractAddress?: string | null
-    ): TypedEventFilter<[string], { contractAddress: string }>;
+    "CreatedNewCloneContract(address,uint256)"(
+      contractAddress?: string | null,
+      price?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { contractAddress: string; price: BigNumber }
+    >;
 
     CreatedNewCloneContract(
-      contractAddress?: string | null
-    ): TypedEventFilter<[string], { contractAddress: string }>;
+      contractAddress?: string | null,
+      price?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { contractAddress: string; price: BigNumber }
+    >;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
@@ -567,6 +633,10 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    _proxyDetails(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     _unpausedCloneIndex(
@@ -589,6 +659,7 @@ export class Erc721ContractFactory extends BaseContract {
       _name: string,
       _symbol: string,
       _maxSupply: BigNumberish,
+      _price: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -597,7 +668,7 @@ export class Erc721ContractFactory extends BaseContract {
     mint(
       _to: string,
       _cloneAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -663,6 +734,16 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    _prices(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _proxyDetails(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     _unpausedCloneIndex(
@@ -685,6 +766,7 @@ export class Erc721ContractFactory extends BaseContract {
       _name: string,
       _symbol: string,
       _maxSupply: BigNumberish,
+      _price: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -693,7 +775,7 @@ export class Erc721ContractFactory extends BaseContract {
     mint(
       _to: string,
       _cloneAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;

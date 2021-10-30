@@ -25,6 +25,8 @@ interface ContractFactoryStorageInterface extends ethers.utils.Interface {
     "_cloneExists(address)": FunctionFragment;
     "_pausedCloneIndex(uint256)": FunctionFragment;
     "_pausedList(uint256)": FunctionFragment;
+    "_prices(address)": FunctionFragment;
+    "_proxyDetails(address)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
     "_unpausedCloneIndex(uint256)": FunctionFragment;
     "_unpausedList(uint256)": FunctionFragment;
@@ -51,6 +53,11 @@ interface ContractFactoryStorageInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "_pausedList",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "_prices", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "_proxyDetails",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "_tokenIdCounter",
@@ -91,6 +98,11 @@ interface ContractFactoryStorageInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "_pausedList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "_prices", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "_proxyDetails",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -183,6 +195,20 @@ export class ContractFactoryStorage extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    _prices(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    _proxyDetails(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string] & {
+        Name: string;
+        Symbol: string;
+        Description: string;
+        Uri: string;
+      }
+    >;
+
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
@@ -220,6 +246,20 @@ export class ContractFactoryStorage extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  _proxyDetails(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, string, string, string] & {
+      Name: string;
+      Symbol: string;
+      Description: string;
+      Uri: string;
+    }
+  >;
 
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -259,6 +299,20 @@ export class ContractFactoryStorage extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    _proxyDetails(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, string, string, string] & {
+        Name: string;
+        Symbol: string;
+        Description: string;
+        Uri: string;
+      }
+    >;
 
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -302,6 +356,10 @@ export class ContractFactoryStorage extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    _prices(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    _proxyDetails(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     _unpausedCloneIndex(
@@ -342,6 +400,16 @@ export class ContractFactoryStorage extends BaseContract {
 
     _pausedList(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _prices(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    _proxyDetails(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

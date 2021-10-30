@@ -26,7 +26,7 @@ describe("test all admin functionality", () => {
         erc721ContractFactory = await Erc721ContractFactory.deploy(erc721ImplementationContract.address);
 
         //clone an implementation
-        let createCloneTx = await erc721ContractFactory.connect(owner).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply);
+        let createCloneTx = await erc721ContractFactory.connect(owner).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply, CreateCloneArg.price);
         let cloneReceipt = await createCloneTx.wait();
 
         let cloneAddress = cloneReceipt.events?.filter((x) => { return x.event === CreatedNewCloneContract })[0].topics[1];
@@ -65,7 +65,7 @@ describe("test all admin functionality", () => {
         //check is cloneId is in the _unpausedList
         let cloneId = await erc721ContractFactory._cloneAddressIds(proxyContract.address);
         let unpausedIndex = await erc721ContractFactory._unpausedCloneIndex(cloneId);
-        
+
         let unpausedCloneAddress = await erc721ContractFactory._unpausedList(unpausedIndex);
         expect(unpausedCloneAddress).to.equal(cloneId);
 

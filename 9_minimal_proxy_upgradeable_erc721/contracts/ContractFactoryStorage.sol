@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Unlicensed
 
+
+
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 pragma solidity ^0.8.4;
@@ -8,11 +10,22 @@ contract ContractFactoryStorage {
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIdCounter;
 
+    struct ProxyDetail {
+        string Name;
+        string Symbol;
+        string Description;
+        string Uri;
+    }
+
     //mapping countid to cloneaddress
     mapping(uint256 => address) public _cloneAddresses;
     mapping(address => uint256) public _cloneAddressIds;
     //map to bool true if clone exist
     mapping(address => bool) public _cloneExists;
+    //not storing price in struct because ProxyDetail is used mainly for viewing only,
+    //save gas 
+    mapping(address => uint256) public _prices;
+    mapping(address => ProxyDetail) public _proxyDetails;
 
     //mapping on countId to index of clone in paused/unpaused list
     mapping(uint256 => uint256) public _pausedCloneIndex;

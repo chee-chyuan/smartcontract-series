@@ -33,11 +33,11 @@ describe("deploy contract, check owners and initial settings", () => {
     })
 
     it("deployed contract by owner with proxy having factory as the owner", async () => {
-        await expect(erc721ContractFactory.connect(user1).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply)).to.reverted;
+        await expect(erc721ContractFactory.connect(user1).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply, CreateCloneArg.price)).to.reverted;
     })
 
     it("owner is able to deploy contract and check clone contract owner to be address of factory", async () => {
-        let createCloneTx = await erc721ContractFactory.connect(owner).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply);
+        let createCloneTx = await erc721ContractFactory.connect(owner).createClone(CreateCloneArg.name, CreateCloneArg.symbol, CreateCloneArg.maxSupply, CreateCloneArg.price);
         let cloneReceipt = await createCloneTx.wait();
 
         let cloneAddress = cloneReceipt.events?.filter((x) => { return x.event === CreatedNewCloneContract })[0].topics[1];
@@ -54,6 +54,6 @@ describe("deploy contract, check owners and initial settings", () => {
     it("check totalUnpaused to equal to 1 after clone deployment", async () => {
         expect(await erc721ContractFactory.totalUnpaused()).to.equal(1);
         expect(await erc721ContractFactory._cloneExists(proxyContract.address)).to.be.true;
-        expect((await erc721ContractFactory._cloneAddresses(ethers.BigNumber.from(0))).toLowerCase()).to.equal(proxyContract.address);
+        expect((await erc721ContractFactory._cloneAddresses(ethers.BigNumber.from(1))).toLowerCase()).to.equal(proxyContract.address);
     })
 })
