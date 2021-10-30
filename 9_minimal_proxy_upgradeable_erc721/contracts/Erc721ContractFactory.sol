@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: Unlicensed
 
-
-
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -42,12 +40,19 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
         require(success, "clone is unsuccessful");
         _afterCreateClone(cloneAddress);
         _prices[cloneAddress] = _price;
+
+        //TODO: handle description and tokenUri
+        _proxyDetails[cloneAddress] = ProxyDetail(_name,_symbol, "", "");
         emit CreatedNewCloneContract(cloneAddress, _price);
     }
 
+    /// @dev user to pay in eth
     function mint(address _to, address _cloneAddress) payable public {
         //TODO
-        //check price
+        //get oracle price
+        //deduct msg.value to calculate the change
+        //return the change
+
         //if ok we mint
     }
 
