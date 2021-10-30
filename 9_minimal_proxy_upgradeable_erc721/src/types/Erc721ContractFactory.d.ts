@@ -24,8 +24,10 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     "_cloneAddressIds(address)": FunctionFragment;
     "_cloneAddresses(uint256)": FunctionFragment;
     "_cloneExists(address)": FunctionFragment;
+    "_pausedCloneIndex(uint256)": FunctionFragment;
     "_pausedList(uint256)": FunctionFragment;
     "_tokenIdCounter()": FunctionFragment;
+    "_unpausedCloneIndex(uint256)": FunctionFragment;
     "_unpausedList(uint256)": FunctionFragment;
     "consumeNft(uint256,address)": FunctionFragment;
     "createClone(string,string,uint256)": FunctionFragment;
@@ -55,12 +57,20 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "_pausedCloneIndex",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "_pausedList",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "_tokenIdCounter",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "_unpausedCloneIndex",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "_unpausedList",
@@ -123,11 +133,19 @@ interface Erc721ContractFactoryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "_pausedCloneIndex",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "_pausedList",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "_tokenIdCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "_unpausedCloneIndex",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -245,6 +263,11 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
+    _pausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     _pausedList(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -253,6 +276,11 @@ export class Erc721ContractFactory extends BaseContract {
     _tokenIdCounter(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _value: BigNumber }>;
+
+    _unpausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     _unpausedList(
       arg0: BigNumberish,
@@ -326,12 +354,22 @@ export class Erc721ContractFactory extends BaseContract {
 
   _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
+  _pausedCloneIndex(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   _pausedList(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+  _unpausedCloneIndex(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   _unpausedList(
     arg0: BigNumberish,
@@ -408,12 +446,22 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
+    _pausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _pausedList(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    _unpausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     _unpausedList(
       arg0: BigNumberish,
@@ -509,12 +557,22 @@ export class Erc721ContractFactory extends BaseContract {
 
     _cloneExists(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    _pausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     _pausedList(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     _tokenIdCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    _unpausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     _unpausedList(
       arg0: BigNumberish,
@@ -595,12 +653,22 @@ export class Erc721ContractFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    _pausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     _pausedList(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     _tokenIdCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    _unpausedCloneIndex(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     _unpausedList(
       arg0: BigNumberish,

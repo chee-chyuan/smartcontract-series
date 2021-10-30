@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: Unlicensed
 
-
-
-
-
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 pragma solidity ^0.8.4;
@@ -19,11 +15,18 @@ contract ContractFactoryStorage {
     mapping(address => bool) public _cloneExists;
 
     //mapping on countId to index of clone in paused/unpaused list
-    mapping(uint256 => uint256) private _pausedCloneIndex;
-    mapping(uint256 => uint256) private _unpausedCloneIndex;
+    mapping(uint256 => uint256) public _pausedCloneIndex;
+    mapping(uint256 => uint256) public _unpausedCloneIndex;
 
     uint256[] public _pausedList; //index to countId
     uint256[] public _unpausedList;
+
+    constructor() {
+        //tokenId shall start from 1
+        //reason: _cloneAddressIds if its mapped to 0, we will not know if its a valid entry or not
+        //default is 0
+        _tokenIdCounter.increment();
+    }
 
     function _beforePaused(address _cloneAddress) internal {
         uint256 countId = _cloneAddressIds[_cloneAddress];
@@ -82,8 +85,8 @@ contract ContractFactoryStorage {
         _pausedList[toReplaceToIndex] = lastIndexValue;
         _pausedList[lastIndex] = _countId;
 
-        delete _unpausedCloneIndex[_countId];
-        _unpausedList.pop();
+        delete _pausedCloneIndex[_countId];
+        _pausedList.pop();
     }
 
     function totalUnpaused() public view returns(uint) {
