@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: Unlicensed
 
-
-
-
-
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -44,7 +40,7 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
         emit CreatedNewCloneContract(cloneAddress);
     }
 
-    function mint(address _to, address _cloneAddress) public {
+    function mint(address _to, address _cloneAddress) payable public {
         //TODO
         //check price
         //if ok we mint
@@ -53,7 +49,10 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     /// for owner to consume the nft to exchange for goods. consumed nfts are consider spent
     /// @param _tokenId tokenid of the nft
     /// @param _cloneAddress clone address of the nft
-    function consumeNft(uint256 _tokenId, address _cloneAddress) public onlyOwner {
+    function consumeNft(uint256 _tokenId, address _cloneAddress)
+        public
+        onlyOwner
+    {
         (bool success, ) = _cloneAddress.call(
             abi.encodeWithSignature("consumeNft(uint256)", _tokenId)
         );
@@ -90,7 +89,13 @@ contract Erc721ContractFactory is Ownable, ContractFactoryStorage {
     ///transfer eth from this account to address
     /// @param _value value to be transferred in wei
     /// @param _recipient recipient address
-    function transferEth(uint256 _value, address _recipient) public onlyOwner {
-        //TODO
+    /// @dev it is the sender's responsibility to ensure that the funds is sent to the correct recipient, if it is a contract, make sure the contract has the ability to transfer funds out
+    function transferEth(uint256 _value, address payable _recipient) public onlyOwner {
+        require(
+            address(this).balance >= _value,
+            "contract does not have sufficient eth balance"
+        );
+
+        _recipient.transfer(_value);
     }
 }
